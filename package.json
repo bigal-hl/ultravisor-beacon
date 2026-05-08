@@ -1,6 +1,6 @@
 {
 	"name": "ultravisor-beacon",
-	"version": "0.0.14",
+	"version": "0.0.15",
 	"description": "Ultravisor Beacon: lightweight beacon client and Fable service for remote task execution",
 	"main": "source/Ultravisor-Beacon-Service.cjs",
 	"scripts": {
