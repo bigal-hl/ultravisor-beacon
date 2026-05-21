@@ -1,6 +1,6 @@
 {
 	"name": "ultravisor-beacon",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Ultravisor Beacon: lightweight beacon client and Fable service for remote task execution",
 	"main": "source/Ultravisor-Beacon-Service.cjs",
 	"scripts": {
@@ -26,7 +26,7 @@
 		"ws": "^8.20.0"
 	},
 	"devDependencies": {
-		"pict-docuserve": "^1.2.0",
+		"pict-docuserve": "^1.3.2",
 		"quackage": "^1.2.3"
 	}
 }

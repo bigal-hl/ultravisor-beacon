@@ -473,6 +473,18 @@ class UltravisorBeaconService extends libFableServiceBase
 	}
 
 	/**
+	 * Convenience accessor for the BeaconID assigned by Ultravisor at
+	 * registration time.  Returns null until enable() has completed
+	 * successfully (and after disable()).  Useful for things like the
+	 * WebAuth helper, which stamps the BeaconID into `RequestingBeacon`
+	 * on every login/logout proxied to UV.
+	 */
+	getBeaconID()
+	{
+		return (this._ThinClient && this._ThinClient._BeaconID) || null;
+	}
+
+	/**
 	 * Get the capability manager instance.
 	 *
 	 * @returns {object}
@@ -494,3 +506,7 @@ module.exports.ProviderRegistry = require('./Ultravisor-Beacon-ProviderRegistry.
 module.exports.AddressResolver = libAddressResolver;
 module.exports.ConnectivityHTTP = libConnectivityHTTP;
 module.exports.ConnectivityWebSocket = libConnectivityWebSocket;
+// Opt-in web-UI auth helper for beacons that host an HTTP UI and want
+// to proxy login through their paired Ultravisor.  See
+// Ultravisor-Beacon-WebAuth.cjs for the install signature.
+module.exports.WebAuth = require('./Ultravisor-Beacon-WebAuth.cjs');
