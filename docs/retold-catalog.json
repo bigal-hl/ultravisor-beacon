@@ -1,93 +1,125 @@
 {
-	"Generated": "2026-04-10T17:19:48.929Z",
+	"Generated": "2026-05-22T05:57:33.898Z",
+	"Mode": "module",
 	"GitHubOrg": "stevenvelozo",
 	"DefaultBranch": "master",
-	"Groups": [
-		{
-			"Name": "Dist",
-			"Key": "dist",
-			"Description": "",
-			"Modules": [
-				{
-					"Name": "indoctrinate_content_staging",
-					"Repo": "indoctrinate_content_staging",
-					"Group": "dist",
-					"Branch": "master",
-					"HasDocs": false,
-					"HasCover": false,
-					"Sidebar": [],
-					"DocFiles": []
-				}
-			]
-		},
-		{
-			"Name": "Docs",
-			"Key": "docs",
-			"Description": "",
-			"Modules": [
-				{
-					"Name": "api",
-					"Repo": "api",
-					"Group": "docs",
-					"Branch": "master",
-					"HasDocs": true,
-					"HasCover": false,
-					"Sidebar": [],
-					"DocFiles": [
-						"api/README.md",
-						"api/beacon-client.md",
-						"api/beacon-service.md",
-						"api/capability-manager.md",
-						"api/capability-provider.md",
-						"api/executor.md",
-						"api/provider-registry.md"
-					]
-				},
-				{
-					"Name": "css",
-					"Repo": "css",
-					"Group": "docs",
-					"Branch": "master",
-					"HasDocs": true,
-					"HasCover": false,
-					"Sidebar": [],
-					"DocFiles": [
-						"css/docuserve.css"
-					]
-				},
-				{
-					"Name": "providers",
-					"Repo": "providers",
-					"Group": "docs",
-					"Branch": "master",
-					"HasDocs": true,
-					"HasCover": false,
-					"Sidebar": [],
-					"DocFiles": [
-						"providers/README.md",
-						"providers/filesystem.md",
-						"providers/llm.md",
-						"providers/shell.md"
-					]
-				}
-			]
-		},
-		{
-			"Name": "Source",
-			"Key": "source",
-			"Description": "",
-			"Modules": [
-				{
-					"Name": "providers",
-					"Repo": "providers",
-					"Group": "source",
-					"Branch": "master",
-					"HasDocs": false,
-					"HasCover": false,
-					"Sidebar": [],
-					"DocFiles": []
-				}
-			]
-		}
-	]
+	"Module": {
+		"Name": "ultravisor-beacon",
+		"Repo": "ultravisor-beacon",
+		"Group": "",
+		"Branch": "master",
+		"HasDocs": true,
+		"HasCover": true,
+		"Sidebar": [
+			{
+				"Title": "Getting Started",
+				"Children": [
+					{
+						"Title": "Introduction",
+						"Path": "README.md"
+					},
+					{
+						"Title": "Quick Start",
+						"Path": "quickstart.md"
+					},
+					{
+						"Title": "Architecture",
+						"Path": "architecture.md"
+					}
+				]
+			},
+			{
+				"Title": "Core Concepts",
+				"Children": [
+					{
+						"Title": "Providers Overview",
+						"Path": "providers/README.md"
+					},
+					{
+						"Title": "Shell",
+						"Path": "providers/shell.md"
+					},
+					{
+						"Title": "FileSystem",
+						"Path": "providers/filesystem.md"
+					},
+					{
+						"Title": "LLM",
+						"Path": "providers/llm.md"
+					}
+				]
+			},
+			{
+				"Title": "API Reference",
+				"Children": [
+					{
+						"Title": "Overview",
+						"Path": "api/README.md"
+					},
+					{
+						"Title": "Service",
+						"Children": []
+					},
+					{
+						"Title": "BeaconService",
+						"Path": "api/beacon-service.md"
+					},
+					{
+						"Title": "BeaconClient",
+						"Path": "api/beacon-client.md"
+					},
+					{
+						"Title": "Execution",
+						"Children": []
+					},
+					{
+						"Title": "Executor",
+						"Path": "api/executor.md"
+					},
+					{
+						"Title": "ProviderRegistry",
+						"Path": "api/provider-registry.md"
+					},
+					{
+						"Title": "Capabilities",
+						"Children": []
+					},
+					{
+						"Title": "CapabilityManager",
+						"Path": "api/capability-manager.md"
+					},
+					{
+						"Title": "CapabilityProvider",
+						"Path": "api/capability-provider.md"
+					}
+				]
+			}
+		],
+		"DocFiles": [
+			".nojekyll",
+			"README.md",
+			"_brand.json",
+			"_cover.md",
+			"_sidebar.md",
+			"_topbar.md",
+			"_version.json",
+			"api/README.md",
+			"api/beacon-client.md",
+			"api/beacon-service.md",
+			"api/capability-manager.md",
+			"api/capability-provider.md",
+			"api/executor.md",
+			"api/provider-registry.md",
+			"architecture.md",
+			"index.html",
+			"providers/README.md",
+			"providers/filesystem.md",
+			"providers/llm.md",
+			"providers/shell.md",
+			"quickstart.md",
+			"retold-catalog.json",
+			"retold-keyword-index.json"
+		]
+	},
+	"Groups": []
 }

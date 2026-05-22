@@ -1,7 +1,7 @@
 {
 	"Name": "ultravisor-beacon",
-	"Version": "0.0.11",
+	"Version": "1.0.1",
 	"Description": "Ultravisor Beacon: lightweight beacon client and Fable service for remote task execution",
-	"GeneratedAt": "2026-04-10T17:19:49.207Z",
-	"GitCommit": "c90f000"
+	"GeneratedAt": "2026-05-22T05:57:34.055Z",
+	"GitCommit": "43cac34"
 }
