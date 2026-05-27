@@ -360,6 +360,38 @@ class UltravisorBeaconClient
 					return fCallback(new Error(`Authentication failed with HTTP ${pResponse.statusCode}`));
 				}
 
+				// Parse the body up front. UV's orator-authentication
+				// returns HTTP 200 with `{ LoggedIn: false, Error: '...' }`
+				// when the credentials don't validate against the auth-
+				// beacon AND crucially does NOT send a Set-Cookie header
+				// in that case. Without an explicit check we used to log
+				// "Authenticated successfully" and proceed with _Session-
+				// Cookie still null — every HTTP-polling work fetch + any
+				// session-gated REST call would then 401. We don't abort
+				// the beacon because the WS transport path authenticates
+				// via JoinSecret on BeaconRegister and works without a
+				// session cookie; only HTTP polling + REST need it.
+				let tmpParsed = null;
+				if (tmpData && tmpData.length > 0)
+				{
+					try { tmpParsed = JSON.parse(tmpData); }
+					catch (pParseError)
+					{
+						return fCallback(new Error(`Invalid JSON in auth response: ${tmpData.substring(0, 200)}`));
+					}
+				}
+
+				if (tmpParsed && tmpParsed.LoggedIn === false)
+				{
+					let tmpReason = tmpParsed.Error || 'auth-beacon rejected credentials';
+					this.log.warn(`[Beacon] HTTP auth rejected for [${this._Config.Name}] — ${tmpReason}. WS transport will still register via JoinSecret, but HTTP polling + any session-gated REST will 401. Register a user account on the auth-beacon for "${this._Config.Name}" (or supply matching --user creds) to fix.`);
+					// Still return success so the caller (which proceeds
+					// to _startWebSocket) keeps going. Empirically the
+					// WS path's JoinSecret auth is independent of the
+					// HTTP session.
+					return fCallback(null, tmpParsed);
+				}
+
 				// Extract session cookie from Set-Cookie headers
 				let tmpSetCookieHeaders = pResponse.headers['set-cookie'];
 				if (tmpSetCookieHeaders && tmpSetCookieHeaders.length > 0)
@@ -369,16 +401,15 @@ class UltravisorBeaconClient
 					this._SessionCookie = tmpCookieParts[0].trim();
 					this.log.info(`[Beacon] Session cookie acquired.`);
 				}
+				else if (tmpParsed && tmpParsed.LoggedIn === true)
+				{
+					// LoggedIn:true should always come with Set-Cookie —
+					// surface the protocol-level oddity so an operator
+					// can investigate (e.g. a proxy stripping cookies).
+					this.log.warn(`[Beacon] Auth reports LoggedIn:true but no Set-Cookie header — session-gated REST will 401. Check for an HTTP proxy stripping cookies.`);
+				}
 
-				try
-				{
-					let tmpParsed = JSON.parse(tmpData);
-					return fCallback(null, tmpParsed);
-				}
-				catch (pParseError)
-				{
-					return fCallback(new Error(`Invalid JSON in auth response: ${tmpData.substring(0, 200)}`));
-				}
+				return fCallback(null, tmpParsed || {});
 			});
 		});
 
