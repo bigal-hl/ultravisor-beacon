@@ -17,6 +17,13 @@ class UltravisorBeaconConnectivityHTTP
 	{
 		this._Options = Object.assign({
 			ServerURL: 'http://localhost:54321',
+			// UserName — HTTP-auth identity for /1.0/Authenticate. Distinct
+			// from Name (the mesh handle UV uses for AffinityKey routing).
+			// Must be forwarded through getTransportConfig so the Service
+			// hands it to the BeaconClient, where _authenticate uses it
+			// (falling back to Name when empty for backward compat with
+			// promiscuous-UV / solo-beacon deployments).
+			UserName: '',
 			Password: '',
 			PollIntervalMs: 5000,
 			HeartbeatIntervalMs: 30000
@@ -32,6 +39,7 @@ class UltravisorBeaconConnectivityHTTP
 	{
 		return {
 			ServerURL: this._Options.ServerURL,
+			UserName: this._Options.UserName,
 			Password: this._Options.Password,
 			PollIntervalMs: this._Options.PollIntervalMs,
 			HeartbeatIntervalMs: this._Options.HeartbeatIntervalMs
