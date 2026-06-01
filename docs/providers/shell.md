@@ -66,7 +66,7 @@ Run a shell command with optional parameters.
 
 ## File Transfer Integration
 
-The Shell provider works seamlessly with the Executor's file transfer pipeline. Use `{SourcePath}` and `{OutputPath}` placeholders in the command:
+The Shell provider works smoothly with the Executor's file transfer pipeline. Use `{SourcePath}` and `{OutputPath}` placeholders in the command:
 
 ```javascript
 {
