@@ -4,42 +4,8 @@ Ultravisor Beacon is designed as a composable system of small, focused classes. 
 
 ## Class Hierarchy
 
-```mermaid
-graph TD
-    BS[BeaconService<br/><small>Fable service wrapper</small>]
-    CM[CapabilityManager<br/><small>Host app capabilities</small>]
-    CA[CapabilityAdapter<br/><small>Descriptor -> Provider bridge</small>]
-    CS[ConnectivityHTTP<br/><small>Transport config</small>]
-    BC[BeaconClient<br/><small>Thin client</small>]
-    EX[Executor<br/><small>Work item router</small>]
-    PR[ProviderRegistry<br/><small>Provider index</small>]
-    CP[CapabilityProvider<br/><small>Base class</small>]
-    SP[Shell Provider]
-    FP[FileSystem Provider]
-    LP[LLM Provider]
-    UP[Custom Provider]
-
-    BS --> CM
-    BS --> CS
-    BS --> BC
-
-    CM -->|buildProviderDescriptors| CA
-    CA -->|registerProvider| PR
-
-    BC --> EX
-    EX --> PR
-
-    PR --> SP
-    PR --> FP
-    PR --> LP
-    PR --> UP
-
-    CP -.->|extends| SP
-    CP -.->|extends| FP
-    CP -.->|extends| LP
-    CP -.->|extends| UP
-    CP -.->|extends| CA
-```
+<!-- bespoke diagram: edit diagrams/class-hierarchy.mmd or .hints.json, then: npx pict-renderer-graph build modules/fable/ultravisor-beacon/docs -->
+![Class Hierarchy](diagrams/class-hierarchy.svg)
 
 ### Component Responsibilities
 
@@ -57,35 +23,8 @@ graph TD
 
 The beacon automatically negotiates the best transport. No configuration is needed -- the decision happens at runtime.
 
-```mermaid
-sequenceDiagram
-    participant B as Beacon Client
-    participant S as Ultravisor Server
-
-    B->>S: POST /1.0/Authenticate
-    S-->>B: 200 + session cookie
-
-    alt WebSocket available
-        B->>S: WebSocket upgrade (with cookie)
-        S-->>B: Connection established
-        B->>S: { Action: BeaconRegister, ... }
-        S-->>B: { EventType: BeaconRegistered, BeaconID }
-        Note over B,S: Push-based dispatch
-        S->>B: { EventType: WorkItem, WorkItem: {...} }
-        B->>S: { Action: WorkComplete, ... }
-    else WebSocket unavailable
-        B->>S: POST /Beacon/Register
-        S-->>B: { BeaconID }
-        Note over B,S: HTTP polling
-        loop Every PollIntervalMs
-            B->>S: POST /Beacon/Work/Poll
-            S-->>B: { WorkItem } or empty
-        end
-        B->>S: POST /Beacon/Work/{hash}/Complete
-    end
-
-    Note over B: On disconnect: re-auth -> try WS -> fallback HTTP
-```
+<!-- bespoke diagram: edit diagrams/transport-flow.mmd or .hints.json, then: npx pict-renderer-graph build modules/fable/ultravisor-beacon/docs -->
+![Transport Flow](diagrams/transport-flow.svg)
 
 ### Reconnection Behavior
 

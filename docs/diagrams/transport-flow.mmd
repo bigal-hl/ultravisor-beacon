@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant B as Beacon Client
+    participant S as Ultravisor Server
+
+    B->>S: POST /1.0/Authenticate
+    S-->>B: 200 + session cookie
+
+    alt WebSocket available
+        B->>S: WebSocket upgrade (with cookie)
+        S-->>B: Connection established
+        B->>S: { Action: BeaconRegister, ... }
+        S-->>B: { EventType: BeaconRegistered, BeaconID }
+        Note over B,S: Push-based dispatch
+        S->>B: { EventType: WorkItem, WorkItem: {...} }
+        B->>S: { Action: WorkComplete, ... }
+    else WebSocket unavailable
+        B->>S: POST /Beacon/Register
+        S-->>B: { BeaconID }
+        Note over B,S: HTTP polling
+        loop Every PollIntervalMs
+            B->>S: POST /Beacon/Work/Poll
+            S-->>B: { WorkItem } or empty
+        end
+        B->>S: POST /Beacon/Work/{hash}/Complete
+    end
+
+    Note over B: On disconnect: re-auth -> try WS -> fallback HTTP

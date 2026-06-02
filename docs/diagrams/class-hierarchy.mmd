@@ -1,0 +1,34 @@
+graph TD
+    BS[BeaconService<br/><small>Fable service wrapper</small>]
+    CM[CapabilityManager<br/><small>Host app capabilities</small>]
+    CA[CapabilityAdapter<br/><small>Descriptor -> Provider bridge</small>]
+    CS[ConnectivityHTTP<br/><small>Transport config</small>]
+    BC[BeaconClient<br/><small>Thin client</small>]
+    EX[Executor<br/><small>Work item router</small>]
+    PR[ProviderRegistry<br/><small>Provider index</small>]
+    CP[CapabilityProvider<br/><small>Base class</small>]
+    SP[Shell Provider]
+    FP[FileSystem Provider]
+    LP[LLM Provider]
+    UP[Custom Provider]
+
+    BS --> CM
+    BS --> CS
+    BS --> BC
+
+    CM -->|buildProviderDescriptors| CA
+    CA -->|registerProvider| PR
+
+    BC --> EX
+    EX --> PR
+
+    PR --> SP
+    PR --> FP
+    PR --> LP
+    PR --> UP
+
+    CP -.->|extends| SP
+    CP -.->|extends| FP
+    CP -.->|extends| LP
+    CP -.->|extends| UP
+    CP -.->|extends| CA
