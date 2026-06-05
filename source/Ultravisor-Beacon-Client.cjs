@@ -14,6 +14,7 @@
  */
 
 const libHTTP = require('http');
+const libHTTPS = require('https');
 const libOS = require('os');
 const libFS = require('fs');
 const libPath = require('path');
@@ -360,7 +361,7 @@ class UltravisorBeaconClient
 		let tmpParsedURL = new URL(this._Config.ServerURL);
 		let tmpOptions = {
 			hostname: tmpParsedURL.hostname,
-			port: tmpParsedURL.port || 80,
+			port: tmpParsedURL.port || (tmpParsedURL.protocol === 'https:' ? 443 : 80),
 			path: '/1.0/Authenticate',
 			method: 'POST',
 			headers: {
@@ -369,7 +370,7 @@ class UltravisorBeaconClient
 			}
 		};
 
-		let tmpReq = libHTTP.request(tmpOptions, (pResponse) =>
+		let tmpReq = (tmpParsedURL.protocol === 'https:' ? libHTTPS : libHTTP).request(tmpOptions, (pResponse) =>
 		{
 			let tmpData = '';
 			pResponse.on('data', (pChunk) => { tmpData += pChunk; });
@@ -848,7 +849,7 @@ class UltravisorBeaconClient
 		let tmpParsedURL = new URL(this._Config.ServerURL);
 		let tmpOptions = {
 			hostname: tmpParsedURL.hostname,
-			port: tmpParsedURL.port || 80,
+			port: tmpParsedURL.port || (tmpParsedURL.protocol === 'https:' ? 443 : 80),
 			path: pPath,
 			method: pMethod,
 			headers: {
@@ -862,7 +863,7 @@ class UltravisorBeaconClient
 			tmpOptions.headers['Cookie'] = this._SessionCookie;
 		}
 
-		let tmpReq = libHTTP.request(tmpOptions, (pResponse) =>
+		let tmpReq = (tmpParsedURL.protocol === 'https:' ? libHTTPS : libHTTP).request(tmpOptions, (pResponse) =>
 		{
 			let tmpData = '';
 			pResponse.on('data', (pChunk) => { tmpData += pChunk; });
